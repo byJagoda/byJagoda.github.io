@@ -11,7 +11,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23B5654A'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Dancing+Script:wght@500&family=Inter:wght@400;500&display=swap&subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Dancing+Script:wght@500;600&family=Inter:wght@400;500&display=swap&subset=latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
 <!-- ===== NAWIGACJA ===== -->
 <header class="nav">
   <div class="container nav__inner">
-    <a href="#top" class="nav__brand">by Jagoda</a>
+    <a href="#top" class="nav__brand script">by Jagoda</a>
     <nav aria-label="Menu główne">
       <ul class="nav__list">
         <li><a href="#o-mnie">O mnie</a></li>
@@ -34,16 +34,24 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
-  <video class="hero__video" autoplay muted loop playsinline poster="img/hero-poster.jpg" aria-hidden="true">
-    <source src="img/hero.mp4" type="video/mp4">
-  </video>
-  <div class="hero__overlay"></div>
   <div class="container hero__inner">
     <div class="hero__text">
-      <span class="script">open level</span>
-      <h1>Joga dla każdego.<br>Połącz ciało, oddech i umysł.</h1>
-      <p class="lead">Vinyasa dla każdego, kto chce poruszać ciałem z intencją i szacunkiem, a przez płynny ruch i oddech uspokoić myśli. Poniedziałki o 17:00 w Kangur Gym. Pierwsze zajęcia 7 września.</p>
+      <h1 class="hero__title">Joga</h1>
+      <p class="hero__sub">dla każdego</p>
+      <p class="hero__script"><span class="line"></span><span class="script">open level</span><span class="line"></span></p>
+      <ul class="facts">
+        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Poniedziałki 17:00</span></li>
+        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>Kangur Gym, Wieruszów</span></li>
+        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17c3-1 6-1 9 0M4 13c3-1 6-1 9 0"/><circle cx="17" cy="9" r="4"/></svg></span><span>Pierwsze zajęcia za darmo</span></li>
+        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span>Zapisy: formularz niżej lub <a href="https://www.instagram.com/by.jagoda.co/" target="_blank" rel="noopener">@by.jagoda.co</a></span></li>
+      </ul>
       <a href="#kontakt" class="btn">Zapisz się na zajęcia</a>
+    </div>
+    <div class="hero__media">
+      <video class="hero__video" autoplay muted loop playsinline poster="img/hero-poster.jpg" aria-hidden="true">
+        <source src="img/hero.mp4" type="video/mp4">
+      </video>
+      <p class="hero__quote"><span class="script">Połącz ciało, oddech i umysł</span></p>
     </div>
   </div>
 </section>
