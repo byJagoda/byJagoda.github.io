@@ -1,0 +1,179 @@
+/* ========================================
+   ZMIENNE
+   ======================================== */
+:root {
+  --bg: #F6EFE5;
+  --bg-alt: #EDE2D3;
+  --text: #3B2F26;
+  --muted: #7A6A5B;
+  --accent: #A67C52;
+  --accent-dark: #6E4E33;
+  --line: #DCCDB9;
+  --todo: #FFF3C4;
+  --todo-text: #6B5300;
+  --font-head: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  --font-script: 'Dancing Script', cursive;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --container-width: 1040px;
+  --radius: 6px;
+  --space: 24px;
+}
+
+/* ========================================
+   RESET I BAZA
+   ======================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--accent-dark); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--accent); outline-offset: 3px;
+}
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; line-height: 1.1; letter-spacing: 0.01em; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); margin-bottom: 20px; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 36px; }
+h3 { font-size: 1.3rem; margin-bottom: 8px; }
+p { margin-bottom: 16px; }
+.container { max-width: var(--container-width); margin-inline: auto; padding-inline: 20px; }
+section { padding-block: 72px; }
+.lead { font-size: 1.15rem; color: var(--muted); max-width: 32em; }
+.eyebrow { font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.script { font-family: var(--font-script); font-size: 1.6rem; color: var(--accent); display: block; margin-bottom: 8px; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+/* ========================================
+   PRZYCISKI
+   ======================================== */
+.btn {
+  display: inline-block; min-height: 44px; padding: 12px 28px;
+  background: var(--accent); color: #fff; text-decoration: none;
+  border: 2px solid var(--accent); border-radius: 999px; font-weight: 500;
+  font-family: var(--font-body); font-size: 1rem; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn--ghost { background: transparent; color: var(--accent-dark); }
+.btn--ghost:hover { background: var(--accent); color: #fff; }
+
+/* ========================================
+   PLACEHOLDERY (znikają w wersji produkcyjnej)
+   ======================================== */
+.placeholder-img {
+  background: var(--bg-alt); border: 1px dashed var(--line);
+  display: grid; place-items: center; color: var(--muted);
+  text-align: center; font-size: 0.9rem; line-height: 1.4;
+}
+.todo {
+  background: var(--todo); color: var(--todo-text); font-size: 0.85rem;
+  padding: 10px 14px; border-radius: var(--radius); margin-top: 20px;
+  border-left: 3px solid #E0B400;
+}
+.todo-inline { background: var(--todo); color: var(--todo-text); padding: 0 4px; }
+
+/* ========================================
+   NAWIGACJA
+   ======================================== */
+.nav { position: sticky; top: 0; background: rgba(250,246,241,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); z-index: 10; }
+.nav__inner { display: flex; align-items: center; justify-content: space-between; min-height: 60px; }
+.nav__brand { font-family: var(--font-head); font-size: 1.35rem; letter-spacing: 0.04em; text-decoration: none; color: var(--text); }
+.nav__list { list-style: none; display: flex; gap: 20px; }
+.nav__list a { text-decoration: none; color: var(--text); padding: 10px 2px; display: inline-block; font-size: 0.95rem; }
+.nav__list a:hover { color: var(--accent-dark); }
+
+/* ========================================
+   HERO
+   ======================================== */
+.hero { position: relative; min-height: 88vh; display: flex; align-items: flex-end; padding-block: 64px 56px; overflow: hidden; color: #fff; }
+.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.hero__overlay { position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(43,38,32,0.82) 0%, rgba(43,38,32,0.35) 55%, rgba(43,38,32,0.15) 100%); }
+.hero__inner { position: relative; z-index: 2; width: 100%; }
+.hero__text { max-width: 34em; }
+.hero .eyebrow { color: #E8D3B8; }
+.hero .script { color: #F1E4D2; }
+.hero .lead { color: rgba(255,255,255,0.88); }
+.hero .btn { border-color: #fff; background: #fff; color: var(--accent-dark); }
+.hero .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ========================================
+   O MNIE
+   ======================================== */
+.about { background: var(--bg-alt); }
+.about__photo { aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius); margin-bottom: 32px; max-width: 360px; width: 100%; }
+.about__story h3 { margin-top: 20px; color: var(--accent-dark); font-size: 0.85rem; font-family: var(--font-body); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.about__story .btn { margin-top: 20px; }
+
+/* ========================================
+   ZAJĘCIA I GRAFIK
+   ======================================== */
+.cards { display: grid; gap: 20px; margin-bottom: 56px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+.card__meta { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.03em; }
+.schedule__title { margin-bottom: 16px; }
+.table-wrap { overflow-x: auto; }
+.schedule { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+.schedule th, .schedule td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.schedule th { font-weight: 500; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.classes .btn { margin-top: 28px; }
+
+/* ========================================
+   KONTAKT
+   ======================================== */
+.contact { background: var(--bg-alt); }
+.contact__inner { max-width: 620px; }
+.form { display: grid; gap: 6px; margin-block: 28px; }
+.form label { font-size: 0.9rem; font-weight: 500; margin-top: 12px; }
+.form input, .form textarea {
+  font: inherit; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: #fff; min-height: 44px; width: 100%;
+}
+.form .btn { margin-top: 16px; justify-self: start; }
+.contact__alt { color: var(--muted); }
+
+/* ========================================
+   STOPKA
+   ======================================== */
+.footer { padding-block: 32px; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--muted); }
+.footer p { margin-bottom: 6px; }
+.footer__small { font-size: 0.8rem; }
+
+/* ========================================
+   TABLET I DESKTOP
+   ======================================== */
+@media (min-width: 768px) {
+  section { padding-block: 96px; }
+  .about__grid { display: grid; grid-template-columns: 340px 1fr; gap: 56px; align-items: start; }
+  .about__photo { margin-bottom: 0; }
+  .cards { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .hero { min-height: 92vh; padding-bottom: 96px; }
+}
+
+/* ========================================
+   RUCH
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero__video { display: none; }
+  .hero { background: url("img/hero-poster.jpg") center / cover no-repeat; }
+  * { transition: none !important; }
+}
+.schedule__note { margin-top: 12px; color: var(--muted); }
+
+/* ========================================
+   CENNIK I INFO
+   ======================================== */
+.info { display: grid; gap: 20px; margin-top: 40px; }
+.info__item { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+.info__item h3 { color: var(--accent-dark); font-size: 0.85rem; font-family: var(--font-body); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; }
+.info__item p { margin-bottom: 8px; }
+@media (min-width: 768px) { .info { grid-template-columns: 1fr 1fr; } }
