@@ -154,8 +154,8 @@
     <h2>Kontakt</h2>
     <p class="lead">Zapisz się na zajęcia albo po prostu zapytaj. Odpowiem najszybciej, jak dam radę.</p>
 
-    <!-- Formularz: Formspree. Podmień action na adres z panelu Formspree (https://formspree.io/f/XXXX) i usuń onsubmit. -->
-    <form class="form" action="#" method="post" onsubmit="event.preventDefault(); document.getElementById('form-msg').hidden=false;">
+    <!-- Formularz: Formspree, konto eventsbyjagoda@gmail.com -->
+    <form class="form" id="zapisy" action="https://formspree.io/f/meaqrogj" method="post">
       <label for="imie">Imię</label>
       <input id="imie" name="imie" type="text" autocomplete="given-name" required>
       <label for="email">E-mail</label>
@@ -166,13 +166,14 @@
       </select>
       <label for="wiadomosc">Wiadomość <span class="optional">(opcjonalnie)</span></label>
       <textarea id="wiadomosc" name="wiadomosc" rows="4"></textarea>
+      <input type="hidden" name="_subject" value="Nowy zapis na zajęcia jogi">
       <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <button type="submit" class="btn">Zapisz się</button>
-      <p id="form-msg" class="todo" hidden>Formularz jeszcze nie jest podpięty. Napisz na maila poniżej.</p>
+      <p id="form-ok" class="form-note form-note--ok" hidden>Dziękuję, zapis przyjęty. Odezwę się mailem z potwierdzeniem.</p>
+      <p id="form-err" class="form-note form-note--err" hidden>Coś nie zadziałało. Napisz proszę na eventsbyjagoda@gmail.com.</p>
     </form>
 
     <p class="contact__alt">Albo bezpośrednio: <a href="mailto:eventsbyjagoda@gmail.com">eventsbyjagoda@gmail.com</a> · Instagram <a href="https://www.instagram.com/by.jagoda.co/" target="_blank" rel="noopener">@by.jagoda.co</a></p>
-    <p class="todo">DO ZROBIENIA: podpiąć Formspree (darmowe konto, 1 minuta) przed publikacją. Numeru telefonu ani WhatsAppa nie ma na stronie, zgodnie z decyzją.</p>
   </div>
 </section>
 
@@ -218,6 +219,26 @@
       b.setAttribute('aria-label', v.muted ? 'Włącz dźwięk' : 'Wycisz');
       b.querySelector('.sound__label').textContent = v.muted ? 'Włącz dźwięk' : 'Wycisz';
       b.classList.toggle('is-on', !v.muted);
+    });
+  })();
+</script>
+<script>
+  // Wysyłka formularza bez opuszczania strony
+  (function () {
+    var f = document.getElementById('zapisy');
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = f.querySelector('button[type=submit]');
+      var ok = document.getElementById('form-ok'), err = document.getElementById('form-err');
+      ok.hidden = true; err.hidden = true;
+      btn.disabled = true; btn.textContent = 'Wysyłam...';
+      fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
+        .then(function (r) {
+          if (r.ok) { f.reset(); ok.hidden = false; btn.textContent = 'Wysłane'; }
+          else { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; }
+        })
+        .catch(function () { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; });
     });
   })();
 </script>
