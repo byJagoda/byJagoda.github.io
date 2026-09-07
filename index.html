@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>by Jagoda - joga vinyasa w Wieruszowie</title>
-  <meta name="description" content="Joga vinyasa, poziom otwarty, 50 min. Poniedziałki o 17:00, Kangur Gym, Wieruszów. Pierwsze zajęcia za darmo.">
+  <meta name="description" content="Joga vinyasa, poziom otwarty, 50 min. Poniedziałki o 17:00, Kangur Gym, Wieruszów. Dwa pierwsze zajęcia za darmo.">
   <meta property="og:title" content="by Jagoda - joga vinyasa w Wieruszowie">
   <meta property="og:description" content="Joga vinyasa, poziom otwarty. Poniedziałki 17:00, Kangur Gym, Wieruszów.">
   <meta property="og:image" content="img/og.jpg">
@@ -15,6 +15,23 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="vine-branch" viewBox="0 0 400 120">
+    <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M0 100 C 60 90, 90 40, 150 50 S 250 80, 310 40 S 380 20, 400 30"/>
+      <path d="M70 78 c -14 -22, 4 -40, 22 -30 c 6 14, -6 30, -22 30z" fill="currentColor" stroke="none" opacity=".85"/>
+      <path d="M150 50 c 8 -24, 30 -26, 36 -8 c -8 12, -26 16, -36 8z" fill="currentColor" stroke="none" opacity=".7"/>
+      <path d="M215 68 c -18 -6, -22 -28, -6 -34 c 14 6, 16 26, 6 34z" fill="currentColor" stroke="none" opacity=".85"/>
+      <path d="M290 46 c 4 -24, 26 -30, 34 -14 c -6 14, -26 22, -34 14z" fill="currentColor" stroke="none" opacity=".7"/>
+      <path d="M350 32 c -14 -8, -14 -28, 0 -32 c 12 6, 12 26, 0 32z" fill="currentColor" stroke="none" opacity=".85"/>
+      <path d="M110 62 c 6 -8, 14 -6, 12 4 c -4 6, -12 4, -12 -4z" fill="currentColor" stroke="none" opacity=".6"/>
+      <path d="M250 62 c 6 -8, 14 -6, 12 4 c -4 6, -12 4, -12 -4z" fill="currentColor" stroke="none" opacity=".6"/>
+      <path d="M190 58 c -6 -10, 2 -18, 8 -12" />
+      <path d="M330 38 c 6 -10, 14 -6, 10 2" />
+    </g>
+  </symbol>
+</svg>
 
 <!-- ===== NAWIGACJA ===== -->
 <header class="nav">
@@ -32,27 +49,36 @@
 
 <main id="top">
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO: wideo na całą szerokość ===== -->
 <section class="hero" id="hero">
-  <div class="container hero__inner">
-    <div class="hero__text">
-      <h1 class="hero__title">Joga</h1>
-      <p class="hero__sub">dla każdego</p>
-      <p class="hero__script"><span class="line"></span><span class="script">open level</span><span class="line"></span></p>
-      <ul class="facts">
-        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Poniedziałki 17:00</span></li>
-        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>Kangur Gym, Wieruszów</span></li>
-        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17c3-1 6-1 9 0M4 13c3-1 6-1 9 0"/><circle cx="17" cy="9" r="4"/></svg></span><span>Pierwsze zajęcia za darmo</span></li>
-        <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span>Zapisy: formularz niżej lub <a href="https://www.instagram.com/by.jagoda.co/" target="_blank" rel="noopener">@by.jagoda.co</a></span></li>
-      </ul>
-      <a href="#kontakt" class="btn">Zapisz się na zajęcia</a>
-    </div>
-    <div class="hero__media">
-      <video class="hero__video" autoplay muted loop playsinline poster="img/hero-poster.jpg" aria-hidden="true">
-        <source src="img/hero.mp4" type="video/mp4">
-      </video>
-      <p class="hero__quote"><span class="script">Połącz ciało, oddech i umysł</span></p>
-    </div>
+  <video class="hero__video" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/hero-poster.jpg">
+    <source src="img/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero__overlay">
+    <h1 class="hero__title">Joga</h1>
+    <p class="hero__sub">dla każdego</p>
+    <p class="hero__script"><span class="line"></span><span class="script">open level</span><span class="line"></span></p>
+    <a href="#kontakt" class="btn">Zapisz się na zajęcia</a>
+  </div>
+  <button class="sound" id="sound-btn" type="button" aria-pressed="false" aria-label="Włącz dźwięk">
+    <svg class="sound__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>
+    <svg class="sound__on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8M18.5 5.5a8.5 8.5 0 0 1 0 13"/></svg>
+    <span class="sound__label">Włącz dźwięk</span>
+  </button>
+  <svg class="vine vine--hero" viewBox="0 0 400 120" aria-hidden="true"><use href="#vine-branch"/></svg>
+</section>
+
+<!-- ===== SZCZEGÓŁY (lista z plakatu) ===== -->
+<section class="intro">
+  <div class="container intro__inner">
+    <svg class="vine vine--left" viewBox="0 0 400 120" aria-hidden="true"><use href="#vine-branch"/></svg>
+    <ul class="facts">
+      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Poniedziałki 17:00</span></li>
+      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>Kangur Gym, Wieruszów</span></li>
+      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17c3-1 6-1 9 0M4 13c3-1 6-1 9 0"/><circle cx="17" cy="9" r="4"/></svg></span><span>Dwa pierwsze zajęcia za darmo</span></li>
+      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span>Zapisy: formularz niżej lub <a href="https://www.instagram.com/by.jagoda.co/" target="_blank" rel="noopener">@by.jagoda.co</a></span></li>
+    </ul>
+    <p class="intro__quote"><span class="script">Połącz ciało, oddech i umysł</span></p>
   </div>
 </section>
 
@@ -107,7 +133,7 @@
     <div class="info">
       <div class="info__item">
         <h3>Cennik</h3>
-        <p>Pierwsze zajęcia dla nowych osób: <strong>za darmo</strong>.</p>
+        <p>Dwa pierwsze zajęcia dla nowych osób: <strong>za darmo</strong>.</p>
         <p>Jedno wejście: <strong>30 zł</strong>.</p>
         <p>Pakiet 4 wejść w miesiącu: <strong>100 zł</strong>.</p>
       </div>
@@ -128,15 +154,20 @@
     <h2>Kontakt</h2>
     <p class="lead">Zapisz się na zajęcia albo po prostu zapytaj. Odpowiem najszybciej, jak dam radę.</p>
 
-    <!-- Formularz: docelowo Formspree (action="https://formspree.io/f/XXXX"). Teraz atrapa. -->
+    <!-- Formularz: Formspree. Podmień action na adres z panelu Formspree (https://formspree.io/f/XXXX) i usuń onsubmit. -->
     <form class="form" action="#" method="post" onsubmit="event.preventDefault(); document.getElementById('form-msg').hidden=false;">
       <label for="imie">Imię</label>
       <input id="imie" name="imie" type="text" autocomplete="given-name" required>
       <label for="email">E-mail</label>
       <input id="email" name="email" type="email" autocomplete="email" required>
-      <label for="wiadomosc">Wiadomość</label>
-      <textarea id="wiadomosc" name="wiadomosc" rows="5" required></textarea>
-      <button type="submit" class="btn">Wyślij</button>
+      <label for="termin">Termin zajęć</label>
+      <select id="termin" name="termin" required>
+        <option value="" disabled selected>Wybierz poniedziałek</option>
+      </select>
+      <label for="wiadomosc">Wiadomość <span class="optional">(opcjonalnie)</span></label>
+      <textarea id="wiadomosc" name="wiadomosc" rows="4"></textarea>
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+      <button type="submit" class="btn">Zapisz się</button>
       <p id="form-msg" class="todo" hidden>Formularz jeszcze nie jest podpięty. Napisz na maila poniżej.</p>
     </form>
 
@@ -155,5 +186,40 @@
   </div>
 </footer>
 
+<script>
+  // Lista najbliższych 8 poniedziałków o 17:00 (zajęcia od 7.09.2026)
+  (function () {
+    var sel = document.getElementById('termin');
+    if (!sel) return;
+    var d = new Date(); d.setHours(0,0,0,0);
+    var start = new Date(2026, 8, 7);
+    if (d < start) d = start;
+    var day = d.getDay();
+    var add = (1 - day + 7) % 7;
+    d.setDate(d.getDate() + add);
+    var months = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+    for (var i = 0; i < 8; i++) {
+      var o = document.createElement('option');
+      var label = 'Poniedziałek ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ', 17:00';
+      o.value = label; o.textContent = label;
+      sel.appendChild(o);
+      d.setDate(d.getDate() + 7);
+    }
+  })();
+
+  // Dźwięk w wideo: przeglądarki wymagają kliknięcia
+  (function () {
+    var v = document.getElementById('hero-video'), b = document.getElementById('sound-btn');
+    if (!v || !b) return;
+    b.addEventListener('click', function () {
+      v.muted = !v.muted;
+      if (!v.muted) { v.volume = 0.6; v.play(); }
+      b.setAttribute('aria-pressed', String(!v.muted));
+      b.setAttribute('aria-label', v.muted ? 'Włącz dźwięk' : 'Wycisz');
+      b.querySelector('.sound__label').textContent = v.muted ? 'Włącz dźwięk' : 'Wycisz';
+      b.classList.toggle('is-on', !v.muted);
+    });
+  })();
+</script>
 </body>
 </html>
