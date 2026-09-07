@@ -51,7 +51,7 @@
 
 <!-- ===== HERO: wideo na całą szerokość ===== -->
 <section class="hero" id="hero">
-  <video class="hero__video" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/hero-poster.jpg">
+  <video class="hero__video" id="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg">
     <source src="img/hero.mp4" type="video/mp4">
   </video>
   <div class="hero__overlay">
@@ -216,6 +216,15 @@
       sel.appendChild(o);
       d.setDate(d.getDate() + 7);
     }
+  })();
+
+  // Płynne wejście wideo, gdy jest gotowe do odtwarzania
+  (function () {
+    var v = document.getElementById('hero-video');
+    if (!v) return;
+    function show() { v.classList.add('is-ready'); }
+    if (v.readyState >= 3) show();
+    else { v.addEventListener('playing', show); v.addEventListener('canplay', show); }
   })();
 
   // Dźwięk w wideo: przeglądarki wymagają kliknięcia
