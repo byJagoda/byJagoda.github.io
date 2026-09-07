@@ -172,7 +172,10 @@
       <input type="hidden" name="_subject" value="Nowy zapis na zajęcia jogi">
       <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <button type="submit" class="btn">Zapisz się</button>
-      <p id="form-ok" class="form-note form-note--ok" hidden>Dziękuję za zapisy. Do zobaczenia!</p>
+      <div id="form-ok" class="form-note form-note--ok" hidden>
+        <p class="form-note__title">Dziękuję za zapisy. Do zobaczenia!</p>
+        <p class="form-note__cal">Dodaj zajęcia do kalendarza: <a id="cal-google" href="#" target="_blank" rel="noopener">Kalendarz Google</a> · <a id="cal-ics" href="#" download="joga-by-jagoda.ics">plik dla Apple i Outlook</a></p>
+      </div>
       <p id="form-err" class="form-note form-note--err" hidden>Coś nie zadziałało. Napisz proszę na eventsbyjagoda@gmail.com.</p>
     </form>
 
@@ -208,7 +211,8 @@
     for (var i = 0; i < 8; i++) {
       var o = document.createElement('option');
       var label = 'Poniedziałek ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ', 17:00';
-      o.value = label; o.textContent = label;
+      var iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      o.value = label; o.textContent = label; o.dataset.iso = iso;
       sel.appendChild(o);
       d.setDate(d.getDate() + 7);
     }
@@ -233,15 +237,49 @@
   (function () {
     var f = document.getElementById('zapisy');
     if (!f) return;
+    // Zajęcia: poniedziałek 17:00-17:50, Kangur Gym
+    function buildCalendar(iso) {
+      if (!iso) return;
+      var d = iso.replace(/-/g, '');
+      var startLocal = d + 'T170000', endLocal = d + 'T175000';
+      var title = 'Joga vinyasa z Jagodą';
+      var place = 'Kangur Gym, al. Niepodległości 14, Wieruszów';
+      var g = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + encodeURIComponent(title)
+        + '&dates=' + startLocal + '/' + endLocal
+        + '&ctz=Europe/Warsaw'
+        + '&location=' + encodeURIComponent(place)
+        + '&details=' + encodeURIComponent('Zajęcia jogi vinyasa, poziom otwarty, 50 minut. https://byjagoda.github.io');
+      document.getElementById('cal-google').href = g;
+      var ics = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//by Jagoda//joga//PL', 'CALSCALE:GREGORIAN',
+        'BEGIN:VTIMEZONE', 'TZID:Europe/Warsaw',
+        'BEGIN:STANDARD', 'DTSTART:19701025T030000', 'TZOFFSETFROM:+0200', 'TZOFFSETTO:+0100',
+        'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU', 'END:STANDARD',
+        'BEGIN:DAYLIGHT', 'DTSTART:19700329T020000', 'TZOFFSETFROM:+0100', 'TZOFFSETTO:+0200',
+        'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'END:DAYLIGHT', 'END:VTIMEZONE',
+        'BEGIN:VEVENT', 'UID:' + d + '-joga@byjagoda',
+        'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z',
+        'DTSTART;TZID=Europe/Warsaw:' + startLocal, 'DTEND;TZID=Europe/Warsaw:' + endLocal,
+        'SUMMARY:' + title, 'LOCATION:' + place,
+        'DESCRIPTION:Zajęcia jogi vinyasa\\, poziom otwarty\\, 50 minut.',
+        'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:Joga za 2 godziny', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'
+      ].join('\r\n');
+      document.getElementById('cal-ics').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    }
+
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = f.querySelector('button[type=submit]');
+      var selEl = document.getElementById('termin');
+      var iso = selEl.options[selEl.selectedIndex] ? selEl.options[selEl.selectedIndex].dataset.iso : '';
       var ok = document.getElementById('form-ok'), err = document.getElementById('form-err');
       ok.hidden = true; err.hidden = true;
       btn.disabled = true; btn.textContent = 'Wysyłam...';
       fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
         .then(function (r) {
-          if (r.ok) { f.reset(); ok.hidden = false; btn.textContent = 'Wysłane'; }
+          if (r.ok) { buildCalendar(iso); f.reset(); ok.hidden = false; btn.textContent = 'Wysłane'; }
           else { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; }
         })
         .catch(function () { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; });

@@ -170,6 +170,10 @@ section { padding-block: 72px; }
 .optional { font-weight: 400; color: var(--muted); }
 .form-note { font-size: 0.95rem; padding: 12px 16px; border-radius: var(--radius); margin-top: 14px; }
 .form-note--ok { background: #E3E8DB; color: #3F5233; border-left: 3px solid var(--green); }
+.form-note p { margin-bottom: 0; }
+.form-note__title { font-weight: 500; }
+.form-note__cal { margin-top: 8px !important; font-size: 0.9rem; }
+.form-note__cal a { color: #3F5233; }
 .form-note--err { background: #F6E1DA; color: #7A3B26; border-left: 3px solid #B5654A; }
 .form .btn[disabled] { opacity: .6; cursor: default; }
 h2::after { content: ""; display: block; width: 48px; height: 2px; background: var(--green-soft); margin-top: 14px; }
