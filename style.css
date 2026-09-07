@@ -133,7 +133,7 @@ section { padding-block: 72px; }
    O MNIE
    ======================================== */
 .about { background: var(--bg-alt); }
-.about__photo { aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius); width: 100%; margin-bottom: 32px; }
+.about__photo { height: auto; border-radius: var(--radius); width: 100%; max-width: 280px; margin-bottom: 32px; }
 .about__story h3 { margin-top: 20px; color: var(--accent-dark); font-size: 0.85rem; font-family: var(--font-body); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
 .about__story .btn { margin-top: 20px; }
 
@@ -182,7 +182,7 @@ h2::after { content: ""; display: block; width: 48px; height: 2px; background: v
    ======================================== */
 @media (min-width: 768px) {
   section { padding-block: 96px; }
-  .about__grid { display: grid; grid-template-columns: 340px 1fr; gap: 56px; align-items: start; }
+  .about__grid { display: grid; grid-template-columns: 280px 1fr; gap: 48px; align-items: start; }
   .about__photo { margin-bottom: 0; }
   .cards { grid-template-columns: 1fr 1fr; }
 }
