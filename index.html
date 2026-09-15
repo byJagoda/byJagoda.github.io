@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>by Jagoda - joga vinyasa w Wieruszowie</title>
-  <meta name="description" content="Joga vinyasa, poziom otwarty, 50 min. Poniedziałki o 17:00, Kangur Gym, Wieruszów. Dwa pierwsze zajęcia za darmo.">
+  <meta name="description" content="Joga vinyasa, poziom otwarty, 50 min. Poniedziałki o 17:00, Kangur Gym, Wieruszów. Pierwsze zajęcia za darmo.">
   <meta property="og:title" content="by Jagoda - joga vinyasa w Wieruszowie">
   <meta property="og:description" content="Joga vinyasa, poziom otwarty. Poniedziałki 17:00, Kangur Gym, Wieruszów.">
   <meta property="og:image" content="https://byjagoda.github.io/img/og.jpg?v=2">
@@ -86,7 +86,7 @@
     <ul class="facts">
       <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Poniedziałki 17:00</span></li>
       <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>Kangur Gym, Wieruszów</span></li>
-      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17c3-1 6-1 9 0M4 13c3-1 6-1 9 0"/><circle cx="17" cy="9" r="4"/></svg></span><span>Dwa pierwsze zajęcia za darmo</span></li>
+      <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17c3-1 6-1 9 0M4 13c3-1 6-1 9 0"/><circle cx="17" cy="9" r="4"/></svg></span><span>Pierwsze zajęcia za darmo</span></li>
       <li><span class="facts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span>Zapisy: formularz niżej lub <a href="https://www.instagram.com/by.jagoda.co/" target="_blank" rel="noopener">@by.jagoda.co</a></span></li>
     </ul>
     <p class="intro__quote"><span class="script">Połącz ciało, oddech i umysł</span></p>
@@ -141,12 +141,12 @@
         </tbody>
       </table>
     </div>
-    <p class="schedule__note">Pierwsze zajęcia: poniedziałek, 7 września 2026.</p>
+    <p class="schedule__note">Zajęcia w każdy poniedziałek.</p>
 
     <div class="info">
       <div class="info__item">
         <h3>Cennik</h3>
-        <p>Dwa pierwsze zajęcia dla nowych osób: <strong>za darmo</strong>.</p>
+        <p>Pierwsze zajęcia dla nowych osób: <strong>za darmo</strong>.</p>
         <p>Jedno wejście: <strong>30 zł</strong>.</p>
         <p>Pakiet 4 wejść w miesiącu: <strong>100 zł</strong>.</p>
         <p class="pay-note">Płatność gotówką na zajęciach.</p>
@@ -229,13 +229,44 @@
     }
   })();
 
-  // Płynne wejście wideo, gdy jest gotowe do odtwarzania
+  // Wideo: płynne wejście + odtwarzanie mimo blokad autoplay na telefonie
   (function () {
     var v = document.getElementById('hero-video');
     if (!v) return;
     function show() { v.classList.add('is-ready'); }
-    if (v.readyState >= 3) show();
-    else { v.addEventListener('playing', show); v.addEventListener('canplay', show); }
+    if (v.readyState >= 2) show();
+    v.addEventListener('loadeddata', show);
+    v.addEventListener('playing', show);
+    v.addEventListener('canplay', show);
+
+    // Safari na iOS wymaga wyciszenia ustawionego właściwością, nie tylko atrybutem
+    v.muted = true;
+    v.setAttribute('muted', '');
+    v.playsInline = true;
+
+    var started = false;
+    function tryPlay() {
+      if (started) return;
+      var p = v.play();
+      if (p && p.then) {
+        p.then(function () { started = true; show(); cleanup(); })
+         .catch(function () { /* autoplay zablokowany, czekamy na dotknięcie ekranu */ });
+      } else { started = true; }
+    }
+    function onGesture() { tryPlay(); }
+    function cleanup() {
+      ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'].forEach(function (ev) {
+        window.removeEventListener(ev, onGesture);
+      });
+    }
+    ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'].forEach(function (ev) {
+      window.addEventListener(ev, onGesture, { passive: true });
+    });
+    v.addEventListener('loadedmetadata', tryPlay);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) tryPlay();
+    });
+    tryPlay();
   })();
 
   // Dźwięk w wideo: przeglądarki wymagają kliknięcia
@@ -286,8 +317,40 @@
         'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:Joga za 2 godziny', 'END:VALARM',
         'END:VEVENT', 'END:VCALENDAR'
       ].join('\r\n');
-      document.getElementById('cal-ics').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+      // Kalendarz Apple: iOS Safari blokuje data: URI, a Blob z atrybutem download
+      // ląduje w Plikach zamiast w Kalendarzu. Prawdziwy plik .ics serwowany przez
+      // https z nagłówkiem text/calendar otwiera się na iPhonie wprost w Kalendarzu.
+      // Pliki generuje build-ics.py do katalogu cal/.
+      var icsEl = document.getElementById('cal-ics');
+      if (icsEl.dataset.blob) { URL.revokeObjectURL(icsEl.dataset.blob); icsEl.removeAttribute('data-blob'); }
+      var staticUrl = 'cal/joga-' + d + '.ics';
+      icsEl.href = staticUrl;
+      icsEl.setAttribute('type', 'text/calendar');
+      // Bez atrybutu download, żeby Safari otworzyło plik, a nie zapisało go
+      icsEl.removeAttribute('download');
+
+      // Awaryjnie: jeśli danego terminu nie ma wśród wygenerowanych plików,
+      // budujemy plik w przeglądarce (Blob). Gorsze na iOS, ale lepsze niż martwy link.
+      fetch(staticUrl, { method: 'HEAD' })
+        .then(function (r) { if (!r.ok) throw new Error('brak pliku'); })
+        .catch(function () {
+          try {
+            var burl = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+            icsEl.dataset.blob = burl;
+            icsEl.href = burl;
+            icsEl.setAttribute('download', 'joga-' + d + '.ics');
+          } catch (e) { /* zostaje link statyczny */ }
+        });
     }
+
+    // Gdy ktoś zaczyna wypełniać formularz ponownie, chowamy poprzednie potwierdzenie
+    f.addEventListener('input', function () {
+      var ok = document.getElementById('form-ok'), err = document.getElementById('form-err');
+      if (!ok.hidden) ok.hidden = true;
+      if (!err.hidden) err.hidden = true;
+      var btn = f.querySelector('button[type=submit]');
+      if (!btn.disabled) btn.textContent = 'Zapisz się';
+    });
 
     f.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -299,7 +362,17 @@
       btn.disabled = true; btn.textContent = 'Wysyłam...';
       fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
         .then(function (r) {
-          if (r.ok) { buildCalendar(iso); f.reset(); ok.hidden = false; btn.textContent = 'Wysłane'; }
+          if (r.ok) {
+            buildCalendar(iso);
+            f.reset();
+            ok.hidden = false;
+            btn.textContent = 'Wysłane';
+            // Odblokuj formularz, żeby można było zapisać się na kolejny termin
+            window.setTimeout(function () {
+              btn.disabled = false;
+              btn.textContent = 'Zapisz się na kolejny termin';
+            }, 1200);
+          }
           else { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; }
         })
         .catch(function () { err.hidden = false; btn.disabled = false; btn.textContent = 'Zapisz się'; });
