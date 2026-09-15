@@ -81,7 +81,21 @@ def main():
         io.open(OUT / ("joga-%s.ics" % key), "w", encoding="utf-8", newline="").write(tresc)
         n += 1
         d += datetime.timedelta(days=7)
+    # Dodatkowo: jeden plik-subskrypcja z regula "kazdy poniedzialek".
+    # Podpinany przez webcal:// - iPhone otwiera taki link wprost w Kalendarzu,
+    # bez pobierania pliku, wiec dziala tam, gdzie zwykly .ics zawodzi.
+    feed = SZABLON.format(d=OD.strftime("%Y%m%d"), stamp=stamp, tytul=esc(TYTUL),
+                          miejsce=esc(MIEJSCE), opis=esc(OPIS), url=URL)
+    feed = feed.replace("UID:%s-joga@byjagoda.github.io\r\n" % OD.strftime("%Y%m%d"),
+                        "UID:grafik-joga@byjagoda.github.io\r\n")
+    feed = feed.replace("SUMMARY:", "RRULE:FREQ=WEEKLY;BYDAY=MO\r\nSUMMARY:")
+    feed = feed.replace("METHOD:PUBLISH\r\n",
+                        "METHOD:PUBLISH\r\nX-WR-CALNAME:Joga z Jagodą\r\n"
+                        "X-WR-TIMEZONE:Europe/Warsaw\r\nREFRESH-INTERVAL;VALUE=DURATION:P1D\r\n"
+                        "X-PUBLISHED-TTL:P1D\r\n")
+    io.open(OUT / "joga.ics", "w", encoding="utf-8", newline="").write(feed)
     print("Wygenerowano %d plikow w %s (do %s)" % (n, OUT, DO))
+    print("Plus subskrypcja cal/joga.ics (kazdy poniedzialek, bez daty koncowej)")
 
 if __name__ == "__main__":
     main()
