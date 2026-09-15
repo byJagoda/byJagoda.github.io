@@ -322,26 +322,14 @@
       // ląduje w Plikach zamiast w Kalendarzu. Prawdziwy plik .ics serwowany przez
       // https z nagłówkiem text/calendar otwiera się na iPhonie wprost w Kalendarzu.
       // Pliki generuje build-ics.py do katalogu cal/.
+      // Zwykly link do prawdziwego pliku, bez zadnych sztuczek. Pliki na kazdy
+      // poniedzialek sa wygenerowane do konca 2028 (build-ics.py), wiec nie ma
+      // potrzeby budowac ich w przegladarce. Zadnego atrybutu download: niech
+      // system sam zdecyduje, czym otworzyc plik.
       var icsEl = document.getElementById('cal-ics');
-      if (icsEl.dataset.blob) { URL.revokeObjectURL(icsEl.dataset.blob); icsEl.removeAttribute('data-blob'); }
-      var staticUrl = 'cal/joga-' + d + '.ics';
-      icsEl.href = staticUrl;
+      icsEl.href = 'cal/joga-' + d + '.ics';
       icsEl.setAttribute('type', 'text/calendar');
-      // Bez atrybutu download, żeby Safari otworzyło plik, a nie zapisało go
       icsEl.removeAttribute('download');
-
-      // Awaryjnie: jeśli danego terminu nie ma wśród wygenerowanych plików,
-      // budujemy plik w przeglądarce (Blob). Gorsze na iOS, ale lepsze niż martwy link.
-      fetch(staticUrl, { method: 'HEAD' })
-        .then(function (r) { if (!r.ok) throw new Error('brak pliku'); })
-        .catch(function () {
-          try {
-            var burl = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
-            icsEl.dataset.blob = burl;
-            icsEl.href = burl;
-            icsEl.setAttribute('download', 'joga-' + d + '.ics');
-          } catch (e) { /* zostaje link statyczny */ }
-        });
     }
 
     // Gdy ktoś zaczyna wypełniać formularz ponownie, chowamy poprzednie potwierdzenie
