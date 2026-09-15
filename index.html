@@ -185,8 +185,10 @@
       <button type="submit" class="btn">Zapisz się</button>
       <div id="form-ok" class="form-note form-note--ok" hidden>
         <p class="form-note__title">Dziękuję za zapisy. Do zobaczenia!</p>
-        <p class="form-note__cal">Dodaj zajęcia do kalendarza: <a id="cal-google" href="#" target="_blank" rel="noopener">Kalendarz Google</a> · <a id="cal-ics" href="#" download="joga-by-jagoda.ics">plik dla Outlooka</a></p>
-        <p class="form-note__cal"><a id="cal-apple" href="webcal://byjagoda.github.io/cal/joga.ics">Dodaj wszystkie poniedziałki do kalendarza iPhone'a</a></p>
+        <p class="form-note__cal">Dodaj zajęcia do kalendarza:</p>
+        <p class="form-note__cal"><a id="cal-apple" href="webcal://byjagoda.github.io/cal/joga.ics">iPhone i Mac</a> <span class="cal-hint">- wszystkie poniedziałki, aktualizują się same</span></p>
+        <p class="form-note__cal"><a id="cal-google" href="#" target="_blank" rel="noopener">Kalendarz Google</a> <span class="cal-hint">- tylko wybrany termin</span></p>
+        <p class="form-note__cal" id="cal-ics-row"><a id="cal-ics" href="#" download="joga-by-jagoda.ics">Outlook i inne</a> <span class="cal-hint">- plik z wybranym terminem, na komputerze</span></p>
       </div>
       <p id="form-err" class="form-note form-note--err" hidden>Coś nie zadziałało. Napisz proszę na eventsbyjagoda@gmail.com.</p>
     </form>
@@ -285,6 +287,18 @@
   })();
 </script>
 <script>
+  // Na iPhonie i iPadzie Safari nie przekazuje pobranego pliku .ics do Kalendarza
+  // i klikniecie nie daje zadnego efektu. Chowamy ten link tam, gdzie jest slepym
+  // zaulkiem. Uzytkownicy Apple maja subskrypcje webcal wyzej, ktora dziala.
+  (function () {
+    var row = document.getElementById('cal-ics-row');
+    if (!row) return;
+    var ua = navigator.userAgent || '';
+    var iOS = /iPad|iPhone|iPod/.test(ua) ||
+              (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    if (iOS) row.hidden = true;
+  })();
+
   // Wysyłka formularza bez opuszczania strony
   (function () {
     var f = document.getElementById('zapisy');
